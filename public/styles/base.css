@@ -1,0 +1,8 @@
+* {
+  box-sizing: border-box;
+}
+/* * sign will select all elements on the entire page. */
+
+html {
+  font-family: "Montserrat", "sans-serif";
+}
