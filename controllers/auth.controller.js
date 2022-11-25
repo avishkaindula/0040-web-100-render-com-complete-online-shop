@@ -5,7 +5,7 @@ function getSignup(req, res) {
   res.render("customer/auth/signup");
 }
 
-async function signup(req, res) {
+async function signup(req, res, next) {
   const user = new User(
     req.body.email,
     req.body.password,
@@ -15,8 +15,13 @@ async function signup(req, res) {
     req.body.city
   );
 
-  await user.signup();
-  // This will trigger the signup method inside User class
+  try {
+    await user.signup();
+    // This will trigger the signup method inside User class
+  } catch (error) {
+    next(error);
+    return;
+  }
 
   res.redirect("/login");
 }
@@ -25,12 +30,19 @@ function getLogin(req, res) {
   res.render("customer/auth/login");
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
   const user = new User(req.body.email, req.body.password);
   // This will assign email and password by extracting them through the request
   // and assign them to email and password parameters of User class and omit fullname, street,
   // postal and city parameters.
-  const existingUser = await user.getUserWithSameEmail();
+  let existingUser;
+  try {
+    // const existingUser = await user.getUserWithSameEmail();
+    existingUser = await user.getUserWithSameEmail();
+  } catch (error) {
+    next(error);
+    return;
+  }
 
   if (!existingUser) {
     res.redirect("/login");
