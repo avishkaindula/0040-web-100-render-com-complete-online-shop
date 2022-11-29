@@ -5,6 +5,9 @@ function createUserSession(req, user, action) {
   // from the mongodb store.
   // The id in the mongodb database is stored as a objectid. Therefor, we need to convert it
   // back to string by using .toString() and now we can save that.
+  req.session.isAdmin = user.isAdmin;
+  // This will save the isAdmin flag onto sessions.
+  // If there's no admin flag, this will be set to undefined by default.
   req.session.save(action);
 }
 
