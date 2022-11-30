@@ -72,10 +72,16 @@ main {
   height: calc(100vh - 5rem);
   width: 100%;
   background-color: var(--color-gray-700);
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
 }
+
+#mobile-menu.open {
+  display: flex;
+}
+/* This kind of selectors means that we wanna select all the elements which has the */
+/* id of #mobile-menu and at the same time, the open class added on them. */
 
 #mobile-menu nav {
   height: 20rem;
