@@ -21,7 +21,13 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static("public"));
-
+app.use("/products/assets", express.static("product-data"));
+// imageUrl in Product class in product.model.js starts with /products/assets
+// Therefor, we can add a filter like this before express.static
+// Now, only requests that starts with /products/assets will be handled by this static middleware.
+// We've told express to look inside product-data folder for images.
+// since there's a image folder inside product-data, the path will be now set as /products/assets/images
+// That's the exact same url we wrote in Product class in product.model.js file. 
 app.use(express.urlencoded({ extended: false }));
 
 const sessionConfig = createSessionConfig();
