@@ -18,6 +18,10 @@ router.post(
 router.get("/products/:id", adminController.getUpdateProduct);
 // :id will give a dynamic routes for different products.
 
-router.post("/products/:id", adminController.updateProduct);
+router.post("/products/:id", imageUploadMiddleware, adminController.updateProduct);
+// We're not deleting old images when replacing them with new ones while updating products.
+// Instead we keep those old image files to. Keeping those image files might be helpful in the future.
+// Even if we uploaded the same image we uploaded before, that image will be assigned a new name and stored
+// separately without replacing the old one.
 
 module.exports = router;

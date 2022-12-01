@@ -33,7 +33,7 @@ async function createNewProduct(req, res, next) {
 async function getUpdateProduct(req, res, next) {
   try {
     const product = await Product.findById(req.params.id);
-    // params. is an object containing parameter values parsed from the URL path. 
+    // params. is an object containing parameter values parsed from the URL path.
     // For example if you have the route /user/:name , then the "name" from the URL path wil be available as req.params.name
     // I think this req.params.id is something we extract from href on product-item.ejs
     // <a class="btn btn-alt" href="/admin/products/<%= product.id %>">View & Edit</a>
@@ -51,7 +51,25 @@ async function getUpdateProduct(req, res, next) {
   }
 }
 
-function updateProduct() {}
+async function updateProduct(req, res, next) {
+  const product = new Product({
+    ...req.body,
+    _id: req.params.id,
+  });
+
+  if (req.file) {
+    product.replaceImage(req.file.filename);
+  }
+
+  try {
+    await product.save();
+  } catch (error) {
+    next(error);
+    return;
+  }
+
+  res.redirect("/admin/products");
+}
 
 module.exports = {
   getProducts: getProducts,
