@@ -30,8 +30,33 @@ async function createNewProduct(req, res, next) {
   res.redirect("/admin/products");
 }
 
+async function getUpdateProduct(req, res, next) {
+  try {
+    const product = await Product.findById(req.params.id);
+    // params. is an object containing parameter values parsed from the URL path. 
+    // For example if you have the route /user/:name , then the "name" from the URL path wil be available as req.params.name
+    // I think this req.params.id is something we extract from href on product-item.ejs
+    // <a class="btn btn-alt" href="/admin/products/<%= product.id %>">View & Edit</a>
+    // In admin.routes.js the URL of the route is set as router.get("/products/:id", adminController.getUpdateProduct);
+    // As the request for that route is sent through the href we created on product-item.ejs file,
+    // the value of /:id will be replaced by /<%= product.id %> of that href="/admin/products/<%= product.id %>
+    // So the value of /<%= product.id %> will be assigned to /:id
+    // So req.params.id will extract the id of <%= product.id %> as it's value.
+
+    // console.log(req.params);
+    // result => { id: '63871ef86bd907f36cd3fc99' }
+    res.render("admin/products/update-product", { product: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+function updateProduct() {}
+
 module.exports = {
   getProducts: getProducts,
   getNewProduct: getNewProduct,
   createNewProduct: createNewProduct,
+  getUpdateProduct: getUpdateProduct,
+  updateProduct: updateProduct,
 };

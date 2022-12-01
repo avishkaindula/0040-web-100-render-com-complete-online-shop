@@ -15,4 +15,9 @@ router.post(
   adminController.createNewProduct
 );
 
+router.get("/products/:id", adminController.getUpdateProduct);
+// :id will give a dynamic routes for different products.
+
+router.post("/products/:id", adminController.updateProduct);
+
 module.exports = router;
