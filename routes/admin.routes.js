@@ -24,4 +24,10 @@ router.post("/products/:id", imageUploadMiddleware, adminController.updateProduc
 // Even if we uploaded the same image we uploaded before, that image will be assigned a new name and stored
 // separately without replacing the old one.
 
+router.delete("/products/:id", adminController.deleteProduct)
+// delete, patch, put are available via Ajax / JS-driven Http requests.
+// So here, instead of submitting a form when deleting, we can handle it via 
+// front-end JavaScript code and send a Ajax request and then manually update the dom.
+// after we got a success response.
+
 module.exports = router;
