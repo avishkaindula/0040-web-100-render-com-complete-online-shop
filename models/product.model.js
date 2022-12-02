@@ -35,6 +35,7 @@ class Product {
       error.code = 404;
       throw error;
     }
+
     return new Product(product);
   }
 
@@ -61,9 +62,9 @@ class Product {
     };
 
     if (this.id) {
+      const productId = new mongodb.ObjectId(this.id);
       // if (this.id) means that there's already a document in the database by that id.
       // which means in here, we're trying to update something that already exists on the database.
-      const productId = new mongodb.ObjectId(this.id);
 
       if (!this.image) {
         delete productData.image;
@@ -85,7 +86,7 @@ class Product {
     }
   }
 
-  async replaceImage(newImage) {
+  replaceImage(newImage) {
     this.image = newImage;
     this.updateImageData();
   }

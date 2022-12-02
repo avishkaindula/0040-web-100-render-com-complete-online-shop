@@ -74,13 +74,17 @@ async function updateProduct(req, res, next) {
 async function deleteProduct(req, res, next) {
   let product;
   try {
-    product = Product.findById(req.params.id);
+    product = await Product.findById(req.params.id);
     await product.remove();
   } catch (error) {
     return next(error);
   }
 
-  res.redirect("/admin/products");
+  // res.redirect("/admin/products");
+  // as we're sending a Ajax request, we cannot redirect like this.
+  // because redirecting like this will lead to a page reload and we
+  // don't wanna do that. Instead we need to send a request in .json format.
+  res.json({ message: "Deleted product!" });
 }
 
 module.exports = {
