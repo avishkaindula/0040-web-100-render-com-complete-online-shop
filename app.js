@@ -9,6 +9,7 @@ const db = require("./data/database");
 const addCsrfTokenMiddleware = require("./middlewares/csrf-token");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
 const checkAuthStatusMiddleware = require("./middlewares/check-auth");
+const protectRoutesMiddleware = require("./middlewares/protect-routes");
 
 const authRoutes = require("./routes/auth.routes");
 const productsRoutes = require("./routes/products.routes");
@@ -27,7 +28,7 @@ app.use("/products/assets", express.static("product-data"));
 // Now, only requests that starts with /products/assets will be handled by this static middleware.
 // We've told express to look inside product-data folder for images.
 // since there's a image folder inside product-data, the path will be now set as /products/assets/images
-// That's the exact same url we wrote in Product class in product.model.js file. 
+// That's the exact same url we wrote in Product class in product.model.js file.
 app.use(express.urlencoded({ extended: false }));
 
 const sessionConfig = createSessionConfig();
@@ -42,6 +43,7 @@ app.use(checkAuthStatusMiddleware);
 app.use(baseRoutes);
 app.use(authRoutes);
 app.use(productsRoutes);
+app.use(protectRoutesMiddleware);
 app.use("/admin", adminRoutes);
 // This will act as a filter
 // Only paths that start with /admin will make it into the admin.routes rote configuration.
