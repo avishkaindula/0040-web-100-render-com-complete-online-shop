@@ -8,4 +8,7 @@ const router = express.Router();
 //   res.render("customer/products/all-products");
 // });
 router.get("/products", productsController.getAllProducts);
+
+router.get("/products/:id", productsController.getProductDetails);
+
 module.exports = router;
