@@ -34,4 +34,8 @@ router.delete("/products/:id", adminController.deleteProduct);
 // front-end JavaScript code and send a Ajax request and then manually update the dom.
 // after we got a success response.
 
+router.get("/orders", adminController.getOrders);
+
+router.patch("/orders/:id", adminController.updateOrder);
+
 module.exports = router;
