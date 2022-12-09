@@ -1,6 +1,13 @@
 const Order = require("../models/order.model");
 const User = require("../models/user.model");
 
+const stripe = require("stripe")(
+  "sk_test_51MCzPdIBMz7kUM6UfJmiMLHjiTuxyG1tbU4Tp4sbT2ao1Fn4m3jANI3R7mMDR50NfL2CPhbN1rJBpJj3HDkVBlT600C5WivWhd"
+);
+// This is same as follows
+// const stripe = require("stripe");
+// const stripeObj = stripe("sk_test_51MCzPdIBMz7kUM6UfJmiMLHjiTuxyG1tbU4Tp4sbT2ao1Fn4m3jANI3R7mMDR50NfL2CPhbN1rJBpJj3HDkVBlT600C5WivWhd");
+
 async function getOrders(req, res) {
   try {
     const orders = await Order.findAllForUser(res.locals.uid);
@@ -35,10 +42,47 @@ async function addOrder(req, res, next) {
   req.session.cart = null;
   // This will clear the cart after the order was set.
 
-  res.redirect("/orders");
+  const session = await stripe.checkout.sessions.create({
+    // the .sessions here has nothing to do with our own session.
+    // .sessions is more general term in here.
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Dummy",
+          },
+          unit_amount_decimal: 10.99,
+        },
+        // This is a object that describes the price just in time for the specific transaction without
+        // any data being stored on stripe's servers.
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: "localhost:3000/orders/success",
+    cancel_url: "localhost:3000/orders/failure",
+    // These are routes created on orders.routes.js file.
+  });
+
+  res.redirect(303, session.url);
+  // We redirect the user to stripe's website here.
+  // So in that site, the payment can be made in a secure environment.
+  // Then once the payment is completed, the user is redirected to either to
+  // localhost:3000/orders/success or localhost:3000/orders/failure routes on our site.
+}
+
+function getSuccess(req, res) {
+  res.render("customer/orders/success");
+}
+
+function getFailure(req, res) {
+  res.render("customer/orders/failure");
 }
 
 module.exports = {
   addOrder: addOrder,
   getOrders: getOrders,
+  getSuccess: getSuccess,
+  getFailure: getFailure,
 };
