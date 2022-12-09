@@ -21,6 +21,7 @@ async function getOrders(req, res) {
 
 async function addOrder(req, res, next) {
   const cart = res.locals.cart;
+  // This cart can also be used to populate line_items with cart data.
   let userDocument;
   try {
     userDocument = await User.findById(res.locals.uid);
@@ -45,23 +46,24 @@ async function addOrder(req, res, next) {
   const session = await stripe.checkout.sessions.create({
     // the .sessions here has nothing to do with our own session.
     // .sessions is more general term in here.
-    line_items: [
-      {
+    line_items: cart.items.map(function (item) {
+      return {
         price_data: {
           currency: "usd",
           product_data: {
-            name: "Dummy",
+            name: item.product.title,
           },
-          unit_amount_decimal: 10.99,
+          unit_amount: +item.product.price.toFixed(2) * 100,
+          // This will give the price in cents. Therefor we need to multiply it by 100
         },
         // This is a object that describes the price just in time for the specific transaction without
         // any data being stored on stripe's servers.
-        quantity: 1,
-      },
-    ],
+        quantity: item.quantity,
+      };
+    }),
     mode: "payment",
-    success_url: "localhost:3000/orders/success",
-    cancel_url: "localhost:3000/orders/failure",
+    success_url: "http://localhost:3000/orders/success",
+    cancel_url: "http://localhost:3000/orders/failure",
     // These are routes created on orders.routes.js file.
   });
 
@@ -69,7 +71,7 @@ async function addOrder(req, res, next) {
   // We redirect the user to stripe's website here.
   // So in that site, the payment can be made in a secure environment.
   // Then once the payment is completed, the user is redirected to either to
-  // localhost:3000/orders/success or localhost:3000/orders/failure routes on our site.
+  // http://localhost:3000/orders/success or http://localhost:3000/orders/failure routes on our site.
 }
 
 function getSuccess(req, res) {
