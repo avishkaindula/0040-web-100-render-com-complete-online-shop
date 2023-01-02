@@ -1,5 +1,4 @@
-# 0040-web-100-render-com-complete-online-shop  
-A Complete E-Commerce App created using MongoDB Atlas , EJS and Express  
+# A Complete E-Commerce App created using MongoDB Atlas , EJS and Express  
 URL to the site created on this project => https://sl-e-online-shop.onrender.com/    
 This is a site that is hosted on render.com => https://render.com/  
 
