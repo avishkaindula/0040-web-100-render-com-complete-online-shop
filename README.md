@@ -1,4 +1,4 @@
-# A Complete E-Commerce App created using MongoDB Atlas , EJS and Express  
+# A Complete E-Commerce App Created Using MongoDB Atlas , EJS and Express  
 URL for this Deployed Web App => https://sl-e-online-shop.onrender.com/    
 This is a site that is hosted on render.com => https://render.com/  
 
