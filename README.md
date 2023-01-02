@@ -1,6 +1,10 @@
-# 0040-web-100-render-com-complete-online-shop
+# 0040-web-100-render-com-complete-online-shop  
+A Complete E-Commerce App created using MongoDB Atlas , EJS and Express  
 URL to the site created on this project => https://sl-e-online-shop.onrender.com/    
-This is a site that is hosted on render.com => https://render.com/
+This is a site that is hosted on render.com => https://render.com/  
+
+This has a admin dashboard , product landing page and a Stripe payment added. It uses the MVC pattern.  
+Technologies used - JavaScript , Express , MongoDB Atlas , ejs , express-session , csurf , bcryptjs , multer  
 
 ![Shop 1](https://user-images.githubusercontent.com/100791045/210076591-8ee2bbdb-3237-4f4d-89c5-d5a49658b0e4.PNG)
 
